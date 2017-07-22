@@ -1,0 +1,68 @@
+<project name="pages">
+  <property name="pages.version" value="0.2a52"/>
+  <property name="src" value="./src"/>
+  <property name="build" value="./build"/>
+  <property name="lib.dir" value="./lib"/>
+  <property name="filename" value="${ant.project.name}-${pages.version}"/>
+  <property name="dist" value="./dist"/>
+  <property name="release" value="${dist}/${filename}"/>
+  <path id="classpath">
+    <fileset dir="${lib.dir}" includes="**/*.jar"/>
+  </path>
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+  <target name="compile">
+    <mkdir dir="${build}/classes"/>
+    <javac srcdir="${src}" destdir="${build}/classes" classpathref="classpath"/>
+  </target>
+  <target name="jar" depends="compile">
+    <mkdir dir="${build}/jar"/>
+    <jar destfile="${build}/jar/${ant.project.name}.jar" basedir="${build}/classes"/>
+  </target>
+  <target name="package" depends="compile, jar">
+    <mkdir dir="${release}"/>
+    <jar destfile="${release}/${filename}.jar" basedir="${build}" includes="**/*.*">
+      <manifest>
+	 <attribute name="Main-Class" value="org.monome.pages.Main" />
+         <attribute name="Pages-Version" value="${pages.version}" />
+      </manifest>
+      <service type="org.monome.pages.pages.Page">
+        <provider classname="org.monome.pages.pages.AbletonClipLauncherPage"/>
+        <provider classname="org.monome.pages.pages.AbletonLiveLooperPage"/>
+        <provider classname="org.monome.pages.pages.AbletonSceneLauncherPage"/>
+        <provider classname="org.monome.pages.pages.ExternalApplicationPage"/>
+        <provider classname="org.monome.pages.pages.GroovyPage"/>
+        <provider classname="org.monome.pages.pages.MachineDrumInterfacePage"/>
+        <provider classname="org.monome.pages.pages.MIDIKeyboardPage"/>
+        <provider classname="org.monome.pages.pages.MIDIFadersPage"/>
+        <provider classname="org.monome.pages.pages.MIDIGeneratorPage"/>
+        <provider classname="org.monome.pages.pages.MIDIPadsPage"/>
+        <provider classname="org.monome.pages.pages.MIDISequencerPage"/>
+        <provider classname="org.monome.pages.pages.MIDISequencerPolyPage"/>
+        <provider classname="org.monome.pages.pages.MIDITriggersPage"/>
+        <provider classname="org.monome.pages.pages.QuadrantsPage"/>
+        <provider classname="org.monome.pages.pages.arc.ExternalApplicationPage"/>
+        <provider classname="org.monome.pages.pages.arc.GroovyPage"/>
+      </service>
+      <zipgroupfileset dir="${lib.dir}" includes="*.jar" />
+      <zipgroupfileset dir="${build}/jar" includes="${ant.project.name}.jar" />
+    </jar>
+    <mkdir dir="${release}/scripts"/>
+    <copy todir="${release}/scripts">
+      <fileset dir="scripts" includes="**/*"/>
+    </copy>
+    <copy todir="${release}">
+      <fileset dir="LiveOSC" includes="**/*"/>
+    </copy>
+    <copy todir="${release}">
+      <fileset dir="." includes="README.md"/>
+      <globmapper from="README.md" to="README.txt"/>
+    </copy>
+    <zip destfile="${dist}/${filename}.zip" basedir="${dist}"/>
+  </target>
+  <target name="run" depends="package">
+    <java jar="build/jar/pages.jar" fork="true"/>
+  </target>
+</project>

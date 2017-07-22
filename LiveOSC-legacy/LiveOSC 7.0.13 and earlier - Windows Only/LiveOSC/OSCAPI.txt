@@ -1,0 +1,35 @@
+
+/live/tempo             (? f tempo)                             #Gets the tempo                         ?Sets the tempo
+/live/time              (? time)                                #Gets the time                          ?Sets the time (scrubs?)
+/live/cue/next                                                  #Jumps to the next cue
+/live/cue/prev                                                  #Jumps to the previous cue
+
+/live/play                                                      #Plays the song from start
+/live/play/continue                                             #Plays the song from current position
+/live/play/selection                                            #Plays the current selection
+/live/play/clip         (i track, i clip)                       #Plays clip in track 
+/live/play/scene        (i scene)                               #Plays scene
+
+/live/stop                                                      #Stops the song
+/live/stop/clip         (i track, i clip)                       #Stops clip in track
+/live/stop/track        (i track)                               #Stops all clips in track
+
+/live/name/scene        (? i scene, ? s name)                   #Gets the name of scene                 ?Sets the name of scene
+/live/name/track        (? i track, ? s name)                   #Gets the name of track                 ?Sets the name of track
+/live/name/clip         (? i track, ?i clip, ? s name)          #Gets the name of clip                  ?Sets the name of clip
+ 
+/live/arm               (i track)                               #Arms track                         
+/live/disarm            (i track)                               #Disarms track
+
+/live/mute              (i track)                               #Mutes track
+/live/unmute            (i track)                               #Unmutes track
+
+/live/solo              (i track)                               #Solos track
+/live/unsolo            (i track)                               #Unsolos track
+
+/live/volume            (i track, ? f volume)                   #Gets track volume                      ?Sets volume (0.0, 1.0)
+/live/pan               (i track, ? f pan)                      #Gets track pan                         ?Sets pan (-1.0, 1.0)
+/live/send              (i track, i send, ? f level)            #Gets track send                        ?Sets track send (0.0, 1.0)
+
+/live/pitch/coarse             (i track, i clip, ? f coarse, ? f fine) #Gets clip pitch                ?sets clip pitch
+/live/pitch/fine
